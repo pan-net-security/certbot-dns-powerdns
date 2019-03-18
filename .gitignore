@@ -1,0 +1,6 @@
+**/__pycache__/
+*.egg-info
+venv
+.venv
+.idea
+.coveralls.yml
