@@ -11,7 +11,7 @@ with open('README.md') as f:
 install_requires = [
     'acme>=0.31.0',
     'certbot>=0.31.0',
-    'dns-lexicon>=2.1.23',
+    'dns-lexicon>=3.2.4',
     'dnspython',
     'mock',
     'setuptools',
