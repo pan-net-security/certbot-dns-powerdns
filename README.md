@@ -56,8 +56,8 @@ Usage
 
 ```
 certbot ... \
-        --authenticator certbot-dns-powerdns:dns-powerdns  
-        --certbot-dns-powerdns:dns-powerdns-credentials ~/pdns-credentials.ini 
+        --authenticator certbot-dns-powerdns:dns-powerdns  \
+        --certbot-dns-powerdns:dns-powerdns-credentials ~/pdns-credentials.ini \
         certonly
 ```
 
