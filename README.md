@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/pan-net-security/certbot-powerdns.svg?branch=master)](https://travis-ci.com/pan-net-security/certbot-powerdns)
+[![Build Status](https://travis-ci.com/pan-net-security/certbot-dns-powerdns.svg?branch=master)](https://travis-ci.com/pan-net-security/certbot-dns-powerdns)
 [![Coverage Status](https://coveralls.io/repos/github/pan-net-security/certbot-dns-powerdns/badge.svg?branch=master)](https://coveralls.io/github/pan-net-security/certbot-dns-powerdns?branch=master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=6cfb0c4728624ebff38afc0b1ef91700795ea9ef&metric=alert_status)](https://sonarcloud.io/dashboard?id=6cfb0c4728624ebff38afc0b1ef91700795ea9ef)
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/github/pan-net-security/certbot-dns-powerdns.svg)
