@@ -31,8 +31,10 @@ class AuthenticatorTest(test_util.TempDirTestCase,
             path
         )
 
-        print("File content")
-        print(open(path).read())
+        print("File content: ")
+        # print(open(path).read())
+        with open(path) as f:
+            print(f.read())
 
         self.config = mock.MagicMock(powerdns_credentials=path,
                                      powerdns_propagation_seconds=0)  # don't wait during tests
