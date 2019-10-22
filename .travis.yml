@@ -6,16 +6,8 @@ services:
 jobs:
   include:
   ### E2E tests with PowerDNS v4.1.10
-  - name: "PowerDNS 4.1.10, python 2.7"
-    python: "2.7"
-    env:
-      - POWERDNS_VERSION="4.1.10"
   - name: "PowerDNS 4.1.10, python 3.5"
     python: "3.5"
-    env:
-      - POWERDNS_VERSION="4.1.10"
-  - name: "PowerDNS 4.1.10, python 3.6"
-    python: "3.6"
     env:
       - POWERDNS_VERSION="4.1.10"
   - name: "PowerDNS 4.1.10, python 3.7"
@@ -23,16 +15,8 @@ jobs:
     env:
       - POWERDNS_VERSION="4.1.10"
   ### E2E tests with PowerDNS v4.2.0
-  - name: "PowerDNS 4.2.0, python 2.7"
-    python: "2.7"
-    env:
-      - POWERDNS_VERSION="4.2.0"
   - name: "PowerDNS 4.2.0, python 3.5"
     python: "3.5"
-    env:
-      - POWERDNS_VERSION="4.2.0"
-  - name: "PowerDNS 4.2.0, python 3.6"
-    python: "3.6"
     env:
       - POWERDNS_VERSION="4.2.0"
   - name: "PowerDNS 4.2.0, python 3.7"
