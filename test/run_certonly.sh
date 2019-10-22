@@ -2,6 +2,7 @@
 
 # creates a unique tmpdir, if mktemp is not found, creates /tmp/<date>
 TEMP_DIR=$(mktemp -d 2>/dev/null || echo '/tmp/'$(date +%Y-%m-%d-%H-%M-%S)  )
+OUTPUT_FILE="$TEMP_DIR/output"
 
 if [ -z $1 ]; then
   echo "Usage: ./$0 /path/to/credentials.ini"
@@ -38,7 +39,12 @@ certbot \
         --no-verify-ssl  \
         --agree-tos \
         --debug \
-        certonly
+        certonly | tee -a $OUTPUT_FILE
 
 echo "# Files created in '$TEMP_DIR': "
 find ${TEMP_DIR:-/tmp}/
+
+set -e
+grep -qi 'CONGRATULATIONS' $OUTPUT_FILE
+
+
