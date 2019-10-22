@@ -1,15 +1,15 @@
 version: "3"
 networks:
-  acmenet:
+  default:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 10.50.50.0/24
+        - subnet: 10.40.40.0/24
 services:
   pebble:
     image: letsencrypt/pebble:v2.0.0
-    command: pebble -config /test/config/pebble-config.json -strict -dnsserver 10.50.50.3:53
+    command: pebble -config /test/config/pebble-config.json -strict -dnsserver 10.40.40.3:53
     ports:
       # HTTPS ACME API
       - 14000:14000
@@ -18,8 +18,8 @@ services:
     environment:
       - PEBBLE_WFE_NONCEREJECT=0
     networks:
-      acmenet:
-        ipv4_address: 10.50.50.2
+      default:
+        ipv4_address: 10.40.40.2
   pdns:
     image: psitrax/powerdns:${POWERDNS_VERSION:-v4.2.0}
     command:
@@ -33,8 +33,8 @@ services:
       MYSQL_USER: root
       MYSQL_PASS: secret
     networks:
-      acmenet:
-        ipv4_address: 10.50.50.3
+      default:
+        ipv4_address: 10.40.40.3
     depends_on:
     - mysql
     ports:
@@ -44,15 +44,15 @@ services:
   mysql:
     image: mariadb:10.4.7-bionic
     networks:
-      acmenet:
-        ipv4_address: 10.50.50.4
+      default:
+        ipv4_address: 10.40.40.4
     environment:
       MYSQL_ROOT_PASSWORD: secret
   setup:
     image: alpine:3.9
     networks:
-      acmenet:
-        ipv4_address: 10.50.50.200
+      default:
+        ipv4_address: 10.40.40.200
     depends_on:
     - pdns
     - pebble
@@ -83,6 +83,3 @@ services:
       curl -s -X POST http://pdns:8081/api/v1/servers/localhost/zones \
         -d '{"name": "in-addr.arpa.", "kind": "Native", "nameservers": ["ns1.example.org."]}' \
         -H "X-API-Key: secret"
-
-
-
