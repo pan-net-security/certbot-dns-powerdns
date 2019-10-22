@@ -21,7 +21,7 @@ services:
       acmenet:
         ipv4_address: 10.50.50.2
   pdns:
-    image: psitrax/powerdns:4.1.10
+    image: psitrax/powerdns:${POWERDNS_VERSION:-v4.2.0}
     command:
     - "--api"
     - "--api-key=secret"

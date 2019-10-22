@@ -3,9 +3,15 @@ language: python
 services:
   - docker
 
+jobs:
+  include:
+  - name: "PowerDNS v4.2.0"
+    env: POWERDNS_VERSION="v4.2.0"
+  - name: "PowerDNS 4.1.10"
+    env: POWERDNS_VERSION="4.1.10"
+
 python:
   - "2.7"
-  #- "3.4"
   - "3.5"
   - "3.6"
   # PyPy versions
@@ -20,6 +26,7 @@ script:
   - pytest
   - pip install .
   - docker-compose up -d
+  - sleep 5
   - ./test/run_certonly.sh test/pdns-credentials.ini
 
 deploy:

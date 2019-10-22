@@ -1,7 +1,5 @@
 #!/bin/sh
 
-
-
 # creates a unique tmpdir, if mktemp is not found, creates /tmp/<date>
 TEMP_DIR=$(mktemp -d 2>/dev/null || echo '/tmp/'$(date +%Y-%m-%d-%H-%M-%S)  )
 
@@ -40,7 +38,7 @@ certbot \
         --no-verify-ssl  \
         --agree-tos \
         --debug \
-        certonly 2>/dev/null
+        certonly
 
 echo "# Files created in '$TEMP_DIR': "
 find ${TEMP_DIR:-/tmp}/
