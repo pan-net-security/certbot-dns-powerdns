@@ -38,6 +38,7 @@ script:
   - docker-compose up -d
   - sleep 5
   - ./test/run_certonly.sh test/pdns-credentials.ini
+  - docker-compose down
 
 deploy:
   provider: pypi
