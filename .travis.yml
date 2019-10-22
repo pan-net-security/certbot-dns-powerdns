@@ -3,20 +3,20 @@ language: python
 services:
   - docker
 
-env:
-  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID"
-
 jobs:
   include:
   - name: "PowerDNS 4.1.10, python 2.7"
     python: "2.7"
-    env: POWERDNS_VERSION="4.1.10"
+    env:
+      - POWERDNS_VERSION="4.1.10"
   - name: "PowerDNS 4.1.10, python 3.5"
     python: "3.5"
-    env: POWERDNS_VERSION="4.1.10"
+    env:
+      - POWERDNS_VERSION="4.1.10"
   - name: "PowerDNS 4.1.10, python 3.7"
     python: "3.7"
-    env: POWERDNS_VERSION="4.1.10"
+    env:
+      - POWERDNS_VERSION="4.1.10"
   # v4.2.0 is the default
   # - name: "PowerDNS v4.2.0"
   #   env: POWERDNS_VERSION="v4.2.0"
@@ -38,12 +38,13 @@ install:
 script:
   - pytest
   - pip install .
-  - docker-compose up -d
+  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID" docker-compose up -d
   - sleep 5
+  - chmod 0500 test/pdns-credentials.ini
   - ./test/run_certonly.sh test/pdns-credentials.ini
 
 after_script:
-  - docker-compose down
+  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID" docker-compose down
 
 deploy:
   provider: pypi
