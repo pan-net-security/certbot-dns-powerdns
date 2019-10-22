@@ -1,0 +1,85 @@
+version: "3"
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.40.40.0/24
+services:
+  pebble:
+    image: letsencrypt/pebble:v2.0.0
+    command: pebble -config /test/config/pebble-config.json -strict -dnsserver 10.40.40.3:53
+    ports:
+      # HTTPS ACME API
+      - 14000:14000
+    # volumes:
+    #   - ./test/config:/test/config
+    environment:
+      - PEBBLE_WFE_NONCEREJECT=0
+    networks:
+      default:
+        ipv4_address: 10.40.40.2
+  pdns:
+    image: psitrax/powerdns:${POWERDNS_VERSION:-v4.2.0}
+    command:
+    - "--api"
+    - "--api-key=secret"
+    - "--webserver"
+    - "--webserver-address=0.0.0.0"
+    - "--webserver-allow-from=0.0.0.0/0"
+    - "--loglevel=10"
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASS: secret
+    networks:
+      default:
+        ipv4_address: 10.40.40.3
+    depends_on:
+    - mysql
+    ports:
+    - "8081:8081"
+    - "8053:53"
+    - "8053:53/udp"
+  mysql:
+    image: mariadb:10.4.7-bionic
+    networks:
+      default:
+        ipv4_address: 10.40.40.4
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+  setup:
+    image: alpine:3.9
+    networks:
+      default:
+        ipv4_address: 10.40.40.200
+    depends_on:
+    - pdns
+    - pebble
+    command:
+    - sh
+    - -c
+    - |
+      apk add --no-cache curl &&
+      # check if pdns is ready
+      while true; do
+        echo "Checking if PDNS is up and responsing ... "
+        if curl -f http://pdns:8081/api -H "X-API-Key: secret"; then
+          break
+        fi
+        sleep 1
+      done
+      # check if pebble is ready
+      while true; do
+        echo "Checking if Pebble is up and responding ... "
+        if curl -k -f https://pebble:14000/dir; then
+          break
+        fi
+        sleep 1
+      done
+      curl -X POST http://pdns:8081/api/v1/servers/localhost/zones \
+        -d '{"name": "example.org.", "kind": "Native", "soa_edit_api": "", "nameservers": ["ns1.example.org."]}' \
+        -H "X-API-Key: secret"
+      curl -s -X POST http://pdns:8081/api/v1/servers/localhost/zones \
+        -d '{"name": "in-addr.arpa.", "kind": "Native", "nameservers": ["ns1.example.org."]}' \
+        -H "X-API-Key: secret"

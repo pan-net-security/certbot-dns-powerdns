@@ -13,7 +13,7 @@ certbot-dns-powerdns
 PowerDNS DNS Authenticator plugin for [Certbot](https://certbot.eff.org/).
 
 This plugin is built from the ground up and follows the development style and life-cycle
-of other `certbot-dns-*` plugins found in the 
+of other `certbot-dns-*` plugins found in the
 [Official Certbot Repository](https://github.com/certbot/certbot).
 
 Installation
@@ -72,13 +72,26 @@ This follows the upstream nomenclature: `certbot-dns-<dns-provider>`.
 
 This is a limitation of the Certbot interface towards _third-party_ plugins.
 
-For details read the discussions: 
+For details read the discussions:
 
 - https://github.com/certbot/certbot/issues/6504#issuecomment-473462138
 - https://github.com/certbot/certbot/issues/6040
 - https://github.com/certbot/certbot/issues/4351
 - https://github.com/certbot/certbot/pull/6372
- 
+
+Development
+-----------
+
+Create a virtualenv, install the plugin (`editable` mode),
+spawn the environment and run the test:
+
+```
+virtualenv -p python3 .venv
+. .venv/bin/activate
+pip install -e .
+docker-compose up -d
+./test/run_certonly.sh test/pdns-credentials.ini
+```
 
 License
 --------

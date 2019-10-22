@@ -1,9 +1,31 @@
 language: python
 
+services:
+  - docker
+
+jobs:
+  include:
+  ### E2E tests with PowerDNS v4.1.10
+  - name: "PowerDNS 4.1.10, python 3.5"
+    python: "3.5"
+    env:
+      - POWERDNS_VERSION="4.1.10"
+  - name: "PowerDNS 4.1.10, python 3.7"
+    python: "3.7"
+    env:
+      - POWERDNS_VERSION="4.1.10"
+  ### E2E tests with PowerDNS v4.2.0
+  - name: "PowerDNS 4.2.0, python 3.5"
+    python: "3.5"
+    env:
+      - POWERDNS_VERSION="v4.2.0"
+  - name: "PowerDNS 4.2.0, python 3.7"
+    python: "3.7"
+    env:
+      - POWERDNS_VERSION="v4.2.0"
+
+# uses default POWERDNS_VERSION in docker-compose.yml
 python:
-  - "2.7"
-  - "3.5"
-  - "3.6"
   # PyPy versions
   - "pypy3.5"
 
@@ -14,6 +36,14 @@ install:
 # run tests
 script:
   - pytest
+  - pip install .
+  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID" docker-compose run setup
+  - sleep 5
+  - chmod 0500 test/pdns-credentials.ini
+  - ./test/run_certonly.sh test/pdns-credentials.ini
+
+after_script:
+  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID" docker-compose down
 
 deploy:
   provider: pypi
