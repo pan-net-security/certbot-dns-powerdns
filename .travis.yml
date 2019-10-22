@@ -33,12 +33,15 @@ after_script:
 jobs:
   include:
     - stage: deploy
+      env: POWERDNS_VERSION=none
       script: skip
+      install: skip
       deploy:
         provider: pypi
         user: $PYPI_USERNAME
         password: $PYPI_PASSWORD
-      if: tag =~ ^[0-9]+\.[0-9]+\.[0-9]+ # match semver
+        on:
+          tags: true
 
 after_success:
   - coveralls
