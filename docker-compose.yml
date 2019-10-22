@@ -55,13 +55,24 @@ services:
         ipv4_address: 10.50.50.200
     depends_on:
     - pdns
+    - pebble
     command:
     - sh
     - -c
     - |
       apk add --no-cache curl &&
+      # check if pdns is ready
       while true; do
+        echo "Checking if PDNS is up and responsing ... "
         if curl -f http://pdns:8081/api -H "X-API-Key: secret"; then
+          break
+        fi
+        sleep 1
+      done
+      # check if pebble is ready
+      while true; do
+        echo "Checking if Pebble is up and responding ... "
+        if curl -k -f https://pebble:14000/dir; then
           break
         fi
         sleep 1

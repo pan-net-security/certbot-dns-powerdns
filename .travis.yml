@@ -3,6 +3,9 @@ language: python
 services:
   - docker
 
+env:
+  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID"
+
 jobs:
   include:
   - name: "PowerDNS 4.1.10, python 2.7"
@@ -38,6 +41,8 @@ script:
   - docker-compose up -d
   - sleep 5
   - ./test/run_certonly.sh test/pdns-credentials.ini
+
+after_script:
   - docker-compose down
 
 deploy:
