@@ -38,7 +38,7 @@ install:
 script:
   - pytest
   - pip install .
-  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID" docker-compose up -d
+  - COMPOSE_PROJECT_NAME="certbotpdns_$TRAVIS_JOB_ID" docker-compose run setup
   - sleep 5
   - chmod 0500 test/pdns-credentials.ini
   - ./test/run_certonly.sh test/pdns-credentials.ini
