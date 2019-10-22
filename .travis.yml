@@ -18,11 +18,11 @@ jobs:
   - name: "PowerDNS 4.2.0, python 3.5"
     python: "3.5"
     env:
-      - POWERDNS_VERSION="4.2.0"
+      - POWERDNS_VERSION="v4.2.0"
   - name: "PowerDNS 4.2.0, python 3.7"
     python: "3.7"
     env:
-      - POWERDNS_VERSION="4.2.0"
+      - POWERDNS_VERSION="v4.2.0"
 
 # uses default POWERDNS_VERSION in docker-compose.yml
 python:
