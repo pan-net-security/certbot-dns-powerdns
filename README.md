@@ -79,6 +79,15 @@ For details read the discussions:
 - https://github.com/certbot/certbot/issues/4351
 - https://github.com/certbot/certbot/pull/6372
  
+Development
+-----------
+
+Create a virtualenv and install the plugin:
+```
+pip install -e ./
+docker-compose up -d
+./test/run_certonly.sh test/pdns-credentials.ini
+```
 
 License
 --------
