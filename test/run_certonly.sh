@@ -18,9 +18,13 @@ fi
 
 echo "# Logs, certificates, keys, accounts will be contained in '$TEMP_DIR'"
 
-mkdir -p $TEMP_DIR/{var/log/letsencrypt/,etc/letsencrypt,var/lib/letsencrypt/} && \
-  chmod -R 0755 $TEMP_DIR/{var/log/letsencrypt/,etc/letsencrypt,var/lib/letsencrypt/}
+mkdir -p $TEMP_DIR/var/log/letsencrypt \
+        $TEMP_DIR/etc/letsencrypt \
+        $TEMP_DIR/var/lib/letsencrypt
 
+chmod -R 0755 $TEMP_DIR/var/log/letsencrypt \
+              $TEMP_DIR/etc/letsencrypt \
+              $TEMP_DIR/var/lib/letsencrypt
 
 certbot \
         --certbot-dns-powerdns:dns-powerdns-credentials $1 \
