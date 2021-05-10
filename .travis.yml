@@ -10,9 +10,10 @@ env:
 # uses default POWERDNS_VERSION in docker-compose.yml
 python:
   # PyPy versions
-  - "3.5"
+  - "3.6"
   - "3.7"
-  - "pypy3.5"
+  - "3.8"
+  - "pypy3"
 
 install:
   - pip install python-coveralls
