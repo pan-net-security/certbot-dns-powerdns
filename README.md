@@ -12,6 +12,10 @@ certbot-dns-powerdns
 
 PowerDNS DNS Authenticator plugin for [Certbot](https://certbot.eff.org/).
 
+Compatibility:
+* PowerDNS Authoritative Server API
+* PowerDNS-Admin API
+
 This plugin is built from the ground up and follows the development style and life-cycle
 of other `certbot-dns-*` plugins found in the
 [Official Certbot Repository](https://github.com/certbot/certbot).
