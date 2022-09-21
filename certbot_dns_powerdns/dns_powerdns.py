@@ -45,6 +45,7 @@ class Authenticator(dns_common.DNSAuthenticator):
             'credentials',
             'PowerDNS credentials file',
             {
+                'zone': 'PowerDNS API zone',
                 'api-url': 'PowerDNS-compatible API FQDN',
                 'api-key': 'PowerDNS-compatible API key (X-API-Key)'
             }
@@ -52,14 +53,15 @@ class Authenticator(dns_common.DNSAuthenticator):
 
     def _perform(self, domain, validation_name, validation):
         self._get_powerdns_client().add_txt_record(
-            domain, validation_name, validation)
+            self.credentials.conf('zone'), validation_name, validation)
 
     def _cleanup(self, domain, validation_name, validation):
         self._get_powerdns_client().del_txt_record(
-            domain, validation_name, validation)
+            self.credentials.conf('zone'), validation_name, validation)
 
     def _get_powerdns_client(self):
         return _PowerDNSLexiconClient(
+            self.credentials.conf('zone'),
             self.credentials.conf('api-url'),
             self.credentials.conf('api-key'),
             self.ttl
@@ -71,12 +73,13 @@ class _PowerDNSLexiconClient(dns_common_lexicon.LexiconClient):
     Encapsulates all communication with the PowerDNS via Lexicon.
     """
 
-    def __init__(self, api_url, api_key, ttl):
+    def __init__(self, zone, api_url, api_key, ttl):
         super(_PowerDNSLexiconClient, self).__init__()
 
         config = dns_common_lexicon.build_lexicon_config('powerdns', {
             'ttl': ttl,
         }, {
+            'zone': zone,
             'auth_token': api_key,
             'pdns_server': api_url,
         })
