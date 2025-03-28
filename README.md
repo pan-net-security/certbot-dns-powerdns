@@ -27,16 +27,15 @@ pip install certbot-dns-powerdns
 Verify:
 
 ```
-$ certbot plugins --text
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-* certbot-dns-powerdns:dns-powerdns
+$ certbot plugins
+...
+* dns-powerdns
 Description: Obtain certificates using a DNS TXT record (if you are using
 PowerDNS for DNS.)
-Interfaces: IAuthenticator, IPlugin
-Entry point: dns-powerdns = certbot_dns_powerdns.dns_powerdns:Authenticator
-
-...
+Interfaces: Authenticator, Plugin
+Entry point: EntryPoint(name='dns-powerdns',
+value='certbot_dns_powerdns.dns_powerdns:Authenticator',
+group='certbot.plugins')
 ...
 ```
 
@@ -46,8 +45,8 @@ Configuration
 The credentials file e.g. `~/pdns-credentials.ini` should look like this:
 
 ```
-certbot_dns_powerdns:dns_powerdns_api_url = https://api.mypowerdns.example.org
-certbot_dns_powerdns:dns_powerdns_api_key = AbCbASsd!@34
+dns_powerdns_api_url = https://api.mypowerdns.example.org
+dns_powerdns_api_key = AbCbASsd!@34
 ```
 
 Usage
@@ -56,28 +55,13 @@ Usage
 
 ```
 certbot ... \
-        --authenticator certbot-dns-powerdns:dns-powerdns  \
-        --certbot-dns-powerdns:dns-powerdns-credentials ~/pdns-credentials.ini \
+        --authenticator dns-powerdns  \
+        --dns-powerdns-credentials ~/pdns-credentials.ini \
         certonly
 ```
 
 FAQ
 -----
-
-##### Why such long name for a plugin?
-
-This follows the upstream nomenclature: `certbot-dns-<dns-provider>`.
-
-##### Why do I have to use `:` separator in the name? And why are the configuration file parameters so weird?
-
-This is a limitation of the Certbot interface towards _third-party_ plugins.
-
-For details read the discussions:
-
-- https://github.com/certbot/certbot/issues/6504#issuecomment-473462138
-- https://github.com/certbot/certbot/issues/6040
-- https://github.com/certbot/certbot/issues/4351
-- https://github.com/certbot/certbot/pull/6372
 
 Development
 -----------
