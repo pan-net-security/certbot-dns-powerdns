@@ -37,7 +37,6 @@ Entry point: EntryPoint(name='dns-powerdns',
 value='certbot_dns_powerdns.dns_powerdns:Authenticator',
 group='certbot.plugins')
 ...
-...
 ```
 
 Configuration
