@@ -30,11 +30,11 @@ Verify:
 $ certbot plugins --text
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-* certbot-dns-powerdns:dns-powerdns
+* dns-powerdns
 Description: Obtain certificates using a DNS TXT record (if you are using
 PowerDNS for DNS.)
 Interfaces: IAuthenticator, IPlugin
-Entry point: dns-powerdns = certbot_dns_powerdns.dns_powerdns:Authenticator
+Entry point: dns-powerdns = dns_powerdns:Authenticator
 
 ...
 ...
