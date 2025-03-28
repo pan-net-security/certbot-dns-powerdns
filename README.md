@@ -27,15 +27,15 @@ pip install certbot-dns-powerdns
 Verify:
 
 ```
-$ certbot plugins --text
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+$ certbot plugins
+...
 * dns-powerdns
 Description: Obtain certificates using a DNS TXT record (if you are using
 PowerDNS for DNS.)
-Interfaces: IAuthenticator, IPlugin
-Entry point: dns-powerdns = dns_powerdns:Authenticator
-
+Interfaces: Authenticator, Plugin
+Entry point: EntryPoint(name='dns-powerdns',
+value='certbot_dns_powerdns.dns_powerdns:Authenticator',
+group='certbot.plugins')
 ...
 ...
 ```
