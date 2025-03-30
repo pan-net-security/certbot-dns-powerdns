@@ -1,0 +1,81 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      POWERDNS_VERSION: "v4.2.0"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+
+    - name: Install dependencies
+      run: |
+        pip install python-coveralls
+        pip install .
+
+    - name: Run tests
+      run: |
+        pytest
+        pip install .
+        COMPOSE_PROJECT_NAME="certbotpdns_${{ github.run_id }}" docker-compose run setup
+        sleep 5
+        chmod 0500 test/pdns-credentials.ini
+        ./test/run_certonly.sh test/pdns-credentials.ini
+
+    - name: Tear down docker-compose services
+      run: |
+        COMPOSE_PROJECT_NAME="certbotpdns_${{ github.run_id }}" docker-compose down
+
+    - name: Build release distributions
+      run: |
+        # NOTE: put your own distribution build steps here.
+        python -m pip install build
+        python -m build
+
+    - name: Upload distributions
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-dists
+        path: dist/
+
+    - name: Upload coverage to Coveralls
+      run: coveralls
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+
+    environment:
+      name: pypi
+
+    steps:
+    - name: Retrieve release distributions
+      uses: actions/download-artifact@v4
+      with:
+        name: release-dists
+        path: dist/
+        
+    - name: Deploy to PyPI
+      uses: pypa/gh-action-pypi-publish@v1.12.4
+      with:
+        user: ${{ secrets.PYPI_USERNAME }}
+        password: ${{ secrets.PYPI_PASSWORD }}
