@@ -35,14 +35,14 @@ jobs:
       run: |
         pytest
         pip install .
-        COMPOSE_PROJECT_NAME="certbotpdns_${{ github.run_id }}" docker-compose run setup
+        COMPOSE_PROJECT_NAME="certbotpdns_${{ github.run_id }}" docker compose run setup
         sleep 5
         chmod 0500 test/pdns-credentials.ini
         ./test/run_certonly.sh test/pdns-credentials.ini
 
     - name: Tear down docker-compose services
       run: |
-        COMPOSE_PROJECT_NAME="certbotpdns_${{ github.run_id }}" docker-compose down
+        COMPOSE_PROJECT_NAME="certbotpdns_${{ github.run_id }}" docker compose down
 
     - name: Build release distributions
       run: |
