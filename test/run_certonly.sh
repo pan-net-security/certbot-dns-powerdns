@@ -45,6 +45,5 @@ echo "# Files created in '$TEMP_DIR': "
 find ${TEMP_DIR:-/tmp}/
 
 set -e
-grep -qi 'CONGRATULATIONS' $OUTPUT_FILE
-
+grep -qi 'Successfully received certificate.' $OUTPUT_FILE
 

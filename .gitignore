@@ -4,3 +4,6 @@ venv
 .venv
 .idea
 .coveralls.yml
+nova/
+build/
+dist/
