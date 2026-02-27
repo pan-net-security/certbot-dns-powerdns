@@ -10,25 +10,28 @@ on:
     branches:
       - main
 
+        #  permissions:
+        #      contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     env:
-      POWERDNS_VERSION: "v4.2.0"
+      POWERDNS_VERSION: "v4.9.0"
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Setup python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v5.5.0
       with:
         python-version: "3.x"
 
     - name: Install dependencies
       run: |
-        pip install python-coveralls
+        pip install pytest
         pip install .
 
     - name: Run tests
@@ -38,7 +41,7 @@ jobs:
         COMPOSE_PROJECT_NAME="certbotpdns_${{ github.run_id }}" docker compose run setup
         sleep 5
         chmod 0500 test/pdns-credentials.ini
-        ./test/run_certonly.sh test/pdns-credentials.ini
+        test/run_certonly.sh test/pdns-credentials.ini
 
     - name: Tear down docker-compose services
       run: |
@@ -56,8 +59,6 @@ jobs:
         name: release-dists
         path: dist/
 
-    - name: Upload coverage to Coveralls
-      run: coveralls
 
   deploy:
     needs: build
