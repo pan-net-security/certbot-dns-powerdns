@@ -28,7 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install python-coveralls
+        pip install python-coveralls pytest
         pip install .
 
     - name: Run tests
