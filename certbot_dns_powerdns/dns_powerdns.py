@@ -84,11 +84,9 @@ class _PowerDNSLexiconClient(dns_common_lexicon.LexiconClient):
         self.provider = powerdns.Provider(config)
 
     def _handle_http_error(self, e, domain_name):
-        if domain_name in str(e) and (
-            # 4.0 and 4.1 compatibility
-            str(e).startswith('422 Client Error: Unprocessable Entity for url:') or
-            # 4.2
-            str(e).startswith('404 Client Error: Not Found for url:')
-            ):
-            return  # Expected errors when zone name guess is wrong
+        # Depending on server and API version, we expect certain error codes while trying
+        # to guess the correct zone name. Ignore.
+        if domain_name in e.response.url and e.response.status_code in [403, 404, 422]:
+            return
+
         return super(_PowerDNSLexiconClient, self)._handle_http_error(e, domain_name)
